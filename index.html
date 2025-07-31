@@ -2,16 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Custom Shape Hole Calculator</title>
   <style>
-    body { margin: 0; font-family: sans-serif; }
-    #ui { position: absolute; top: 10px; left: 10px; background: #fff; padding: 10px; border-radius: 8px; z-index: 10; }
-    textarea, input { width: 280px; margin-top: 10px; }
+    body { margin: 0; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; }
+    #ui { width: 95%; max-width: 700px; background: #fff; padding: 15px; margin-top: 10px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    textarea, input, button { width: 100%; margin-top: 10px; box-sizing: border-box; font-size: 1em; }
+    canvas.visual { width: 95vw; max-width: 700px; height: auto; margin: 10px 0; border: 1px solid #ccc; }
     canvas#hiddenCanvas { display: none; }
-    canvas.visual { position: absolute; top: 0; border-left: 1px solid #ccc; }
-    #previewCanvasA { left: 320px; }
-    #previewCanvasB { left: 640px; }
-    #connectionCanvas { left: 960px; }
+    h3 { margin: 0 0 10px 0; }
   </style>
 </head>
 <body>
@@ -20,14 +19,14 @@
   <input type="file" id="imgInput" accept="image/*">
   <button onclick="processImage()">Generate</button>
   <p>Plate A:</p>
-  <textarea id="plateA"></textarea>
+  <textarea id="plateA" rows="6"></textarea>
   <p>Plate B:</p>
-  <textarea id="plateB"></textarea>
+  <textarea id="plateB" rows="6"></textarea>
 </div>
 <canvas id="hiddenCanvas"></canvas>
-<canvas id="previewCanvasA" class="visual" width="300" height="300"></canvas>
-<canvas id="previewCanvasB" class="visual" width="300" height="300"></canvas>
-<canvas id="connectionCanvas" class="visual" width="300" height="300"></canvas>
+<canvas id="previewCanvasA" class="visual" width="700" height="700"></canvas>
+<canvas id="previewCanvasB" class="visual" width="700" height="700"></canvas>
+<canvas id="connectionCanvas" class="visual" width="700" height="700"></canvas>
 <script src="https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.min.js"></script>
 <script>
   const plateSize = 300;
@@ -69,9 +68,9 @@
         const previewCtxB = document.getElementById("previewCanvasB").getContext("2d");
         const connectionCtx = document.getElementById("connectionCanvas").getContext("2d");
 
-        previewCtxA.clearRect(0, 0, 300, 300);
-        previewCtxB.clearRect(0, 0, 300, 300);
-        connectionCtx.clearRect(0, 0, 300, 300);
+        previewCtxA.clearRect(0, 0, 700, 700);
+        previewCtxB.clearRect(0, 0, 700, 700);
+        connectionCtx.clearRect(0, 0, 700, 700);
 
         previewCtxA.fillStyle = "black";
         previewCtxB.fillStyle = "black";
@@ -108,16 +107,16 @@
               const canvasYB = pointB.y + plateSize / 2;
 
               previewCtxA.beginPath();
-              previewCtxA.arc(canvasXA, canvasYA, 1.5, 0, 2 * Math.PI);
+              previewCtxA.arc(canvasXA * 2.33, canvasYA * 2.33, 2, 0, 2 * Math.PI);
               previewCtxA.fill();
 
               previewCtxB.beginPath();
-              previewCtxB.arc(canvasXB, canvasYB, 1.5, 0, 2 * Math.PI);
+              previewCtxB.arc(canvasXB * 2.33, canvasYB * 2.33, 2, 0, 2 * Math.PI);
               previewCtxB.fill();
 
               connectionCtx.beginPath();
-              connectionCtx.moveTo(canvasXA, canvasYA);
-              connectionCtx.lineTo(canvasXB, canvasYB);
+              connectionCtx.moveTo(canvasXA * 2.33, canvasYA * 2.33);
+              connectionCtx.lineTo(canvasXB * 2.33, canvasYB * 2.33);
               connectionCtx.stroke();
             }
           }
